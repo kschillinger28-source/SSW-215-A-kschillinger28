@@ -18,6 +18,8 @@
   - Personal Portfolio: A responsive web portfolio built from a strict Markdown specification.
 - Social link: GitHub (https://github.com/kschillinger28-source) MUST open in a new tab (target="_blank").
 
+- The page background MUST be dark navy (#1b2a41) with white text.
+
 ## 4. Acceptance Checklist
 - [x] Valid semantic HTML5: the page uses <header>, <main>, and <footer>.
 - [x] The avatar image has width, height, and alt attributes.
