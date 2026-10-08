@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kurt Schillinger</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body class="page">
+    <header class="hero">
+      <section class="hero__text" aria-labelledby="page-title">
+        <p class="hero__eyebrow">Software Engineering Student</p>
+        <h1 class="hero__title" id="page-title">Kurt Schillinger</h1>
+        <p class="hero__bio">
+          Passionate about software development and web applications. Currently
+          building hands-on projects and exploring modern developer tools.
+        </p>
+        <form class="hero__action" action="#projects" method="get">
+          <button class="button button--primary" type="submit">
+            See my projects
+          </button>
+        </form>
+        <button class="button button--secondary" type="button" disabled>
+          Contact me (coming soon)
+        </button>
+      </section>
+
+      <img
+        class="hero__avatar"
+        src="./assets/avatar.jpg"
+        width="220"
+        height="220"
+        alt="Kurt Schillinger portrait"
+      />
+    </header>
+
+    <nav class="site-nav" aria-label="Main navigation">
+      <a class="site-nav__link" href="#projects">Projects</a>
+      <a
+        class="site-nav__link"
+        href="https://github.com/kschillinger28-source"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        GitHub
+      </a>
+    </nav>
+
+    <main class="main-content">
+      <section id="projects" class="projects">
+        <h2 class="section-title">Projects</h2>
+        <div class="projects__list">
+          <article class="card">
+            <h3 class="card__title">Music Discovery App:</h3>
+            <p class="card__description">
+              A Tinder-style swipe interface for discovering songs and curating
+              playlists.
+            </p>
+          </article>
+          <!-- hand-edited by KS -->
+          <article class="card featured">
+            <h3 class="card__title">Personal Portfolio:</h3>
+            <p class="card__description">
+              A responsive web portfolio built from a strict Markdown
+              specification.
+            </p>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <a
+        class="site-footer__link"
+        href="https://github.com/kschillinger28-source"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        GitHub
+      </a>
+    </footer>
+  </body>
+</html>
