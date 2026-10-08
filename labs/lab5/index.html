@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Kurt Schillinger</title>
+    <script src="./app.js" defer></script>
     <link rel="stylesheet" href="./style.css" />
   </head>
   <body class="page">
@@ -15,11 +16,9 @@
           Passionate about software development and web applications. Currently
           building hands-on projects and exploring modern developer tools.
         </p>
-        <form class="hero__action" action="#projects" method="get">
-          <button class="button button--primary" type="submit">
-            See my projects
-          </button>
-        </form>
+        <a class="button button--primary" href="#projects" aria-expanded="false">
+          See my projects
+        </a>
         <button class="button button--secondary" type="button" disabled>
           Contact me (coming soon)
         </button>
@@ -47,7 +46,7 @@
     </nav>
 
     <main class="main-content">
-      <section id="projects" class="projects">
+      <section class="projects" id="projects">
         <h2 class="section-title">Projects</h2>
         <div class="projects__list">
           <article class="card">
