@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kurt Schillinger</title>
+    <script src="{{ url_for('static', filename='app.js') }}" defer></script>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+  </head>
+  <body class="page">
+    <header class="hero">
+      <section class="hero__text" aria-labelledby="page-title">
+        <p class="hero__eyebrow">Software Engineering Student</p>
+        <h1 class="hero__title" id="page-title">Kurt Schillinger</h1>
+        <p class="hero__bio">
+          Passionate about software development and web applications. Currently
+          building hands-on projects and exploring modern developer tools.
+        </p>
+        <a class="button button--primary" href="#projects">
+          See my projects
+        </a>
+        <button class="button button--secondary" type="button" disabled>
+          Contact me (coming soon)
+        </button>
+      </section>
+
+      <img
+        class="hero__avatar"
+        src="./assets/avatar.jpg"
+        width="220"
+        height="220"
+        alt="Kurt Schillinger portrait"
+      />
+    </header>
+
+    <nav class="site-nav" aria-label="Main navigation">
+      <a class="site-nav__link" href="#projects">Projects</a>
+      <a
+        class="site-nav__link"
+        href="https://github.com/kschillinger28-source"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        GitHub
+      </a>
+    </nav>
+
+    <main class="main-content">
+      <section class="projects" id="projects" aria-labelledby="projects-title">
+        <h2 class="section-title" id="projects-title">Projects</h2>
+        <div class="projects__filter">
+          <label class="filter-label" for="filter-input">Filter projects</label>
+          <input
+            class="filter-input"
+            id="filter-input"
+            type="search"
+            autocomplete="off"
+          />
+          <p class="project-count" id="project-count" aria-live="polite"></p>
+        </div>
+        <div class="projects__list">
+          {% for project in projects %}
+          <article
+            class="card{% if project.get('featured') %} featured{% endif %}"
+            data-project-id="{{ project.id }}"
+          >
+            <h3 class="card__title">{{ project.title }}</h3>
+            <p class="card__description">{{ project.description }}</p>
+            {% if project.likes > 10 %}
+            <span class="trending-badge">Trending</span>
+            {% endif %}
+            <div class="card__actions">
+              <button class="upvote-btn" type="button">Upvote</button>
+              <p class="card__likes">
+                Likes: <span class="like-count">{{ project.likes }}</span>
+              </p>
+            </div>
+          </article>
+          {% endfor %}
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <a
+        class="site-footer__link"
+        href="https://github.com/kschillinger28-source"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        GitHub
+      </a>
+    </footer>
+  </body>
+</html>
