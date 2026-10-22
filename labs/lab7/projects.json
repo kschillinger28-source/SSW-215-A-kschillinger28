@@ -1,0 +1,14 @@
+[
+  {
+    "id": 1,
+    "title": "Weather App",
+    "description": "Shows the forecast for a city.",
+    "likes": 3
+  },
+  {
+    "id": 2,
+    "title": "Snake Game",
+    "description": "The classic game, in JavaScript.",
+    "likes": 7
+  }
+]
