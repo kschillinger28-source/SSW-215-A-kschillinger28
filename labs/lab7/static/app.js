@@ -1,15 +1,20 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // Select
   const filterInput = document.querySelector('#filter-input');
   const projectCards = document.querySelectorAll('.card');
   const projectCount = document.querySelector('#project-count');
+  const projectsButton = document.querySelector('.button--primary');
+
+  if (projectsButton) {
+    projectsButton.addEventListener('click', () => {
+      window.location.hash = 'projects';
+    });
+  }
 
   if (!filterInput || !projectCount) return;
 
   const totalProjects = projectCards.length;
 
   const updateFilter = () => {
-    // Read
     const query = filterInput.value;
     let visibleCount = 0;
     const visibleTitles = [];

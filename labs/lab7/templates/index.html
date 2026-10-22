@@ -19,9 +19,13 @@
           Passionate about software development and web applications. Currently
           building hands-on projects and exploring modern developer tools.
         </p>
-        <a class="button button--primary" href="#projects">
+        <button
+          class="button button--primary"
+          type="button"
+          aria-controls="projects"
+        >
           See my projects
-        </a>
+        </button>
         <button class="button button--secondary" type="button" disabled>
           Contact me (coming soon)
         </button>
@@ -64,7 +68,7 @@
         <div class="projects__list">
           {% for project in projects %}
           <article
-            class="card{% if project.get('featured') %} featured{% endif %}"
+            class="card"
             data-project-id="{{ project.id }}"
           >
             <h3 class="card__title">{{ project.title }}</h3>

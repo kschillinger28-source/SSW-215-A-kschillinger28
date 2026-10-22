@@ -20,7 +20,6 @@ projects_db = [
             "specification."
         ),
         "likes": 11,
-        "featured": True,
     },
 ]
 
