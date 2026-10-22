@@ -10,47 +10,39 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  if (!filterInput || !projectCount) return;
+  if (filterInput && projectCount) {
+    const totalProjects = projectCards.length;
 
-  const totalProjects = projectCards.length;
+    const updateFilter = () => {
+      const query = filterInput.value;
+      let visibleCount = 0;
+      const visibleTitles = [];
 
-  const updateFilter = () => {
-    const query = filterInput.value;
-    let visibleCount = 0;
-    const visibleTitles = [];
+      projectCards.forEach((card) => {
+        const titleElement = card.querySelector('h2');
+        const titleText = titleElement ? titleElement.textContent : card.textContent;
 
-    projectCards.forEach((card) => {
-      const titleElement = card.querySelector('h2');
-      const titleText = titleElement ? titleElement.textContent : card.textContent;
+        const matches = titleText.toLowerCase().includes(query.toLowerCase());
+        card.classList.toggle('is-hidden', !matches);
 
-      // hand-edited by KS
-      const matches = titleText.toLowerCase().includes(query.toLowerCase());
-
-      // Update - hand-edited by KS
-      card.classList.toggle('is-hidden', !matches);
-
-      if (matches) {
-        visibleCount++;
-        if (titleElement) {
-          visibleTitles.push(titleElement.textContent.trim());
+        if (matches) {
+          visibleCount++;
+          if (titleElement) {
+            visibleTitles.push(titleElement.textContent.trim());
+          }
         }
-      }
-    });
+      });
 
-    // Update count display
-    projectCount.textContent = `Showing ${visibleCount} of ${totalProjects} projects`;
+      projectCount.textContent = `Showing ${visibleCount} of ${totalProjects} projects`;
+      console.log(`(${visibleTitles.length})`, visibleTitles);
+    };
 
-    // Stretch goal log output
-    console.log(`(${visibleTitles.length})`, visibleTitles);
-  };
+    filterInput.addEventListener('input', updateFilter);
+    updateFilter();
+  }
 
-  // Listen
-  filterInput.addEventListener('input', updateFilter);
-
-  // Initial run on page load
-  updateFilter();
-
-  projectCards.forEach((card) => {
+  // Handle Upvotes
+  document.querySelectorAll('.card').forEach((card) => {
     const upvoteButton = card.querySelector('.upvote-btn');
     const likeCount = card.querySelector('.like-count');
 
@@ -74,4 +66,32 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   });
+
+  // Handle Adding a New Project over the Network (Part 5 Stretch)
+  const newTitleInput = document.querySelector('#new-title');
+  const addProjectBtn = newTitleInput ? newTitleInput.nextElementSibling : null;
+
+  if (newTitleInput && addProjectBtn) {
+    addProjectBtn.addEventListener('click', async () => {
+      const title = newTitleInput.value.trim();
+
+      try {
+        const response = await fetch('/api/projects', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ title }),
+        });
+
+        if (response.status === 201) {
+          window.location.reload();
+        } else {
+          console.error('Server rejected project creation with status:', response.status);
+        }
+      } catch (error) {
+        console.error('Network error while creating project:', error);
+      }
+    });
+  }
 });

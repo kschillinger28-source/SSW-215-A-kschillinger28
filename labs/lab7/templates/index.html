@@ -33,7 +33,7 @@
 
       <img
         class="hero__avatar"
-        src="./assets/avatar.jpg"
+        src="{{ url_for('avatar') }}"
         width="220"
         height="220"
         alt="Kurt Schillinger portrait"
@@ -55,6 +55,22 @@
     <main class="main-content">
       <section class="projects" id="projects" aria-labelledby="projects-title">
         <h2 class="section-title" id="projects-title">Projects</h2>
+
+        <!-- Add Project Block (Part 5 requirement) -->
+        <div class="projects__filter" style="margin-bottom: 15px;">
+          <label class="filter-label" for="new-title">Add project</label>
+          <div style="display: flex; gap: 10px; margin-top: 5px;">
+            <input
+              class="filter-input"
+              id="new-title"
+              type="text"
+              placeholder="Enter new project title..."
+              autocomplete="off"
+            />
+            <button class="button button--primary" type="button">Add project</button>
+          </div>
+        </div>
+
         <div class="projects__filter">
           <label class="filter-label" for="filter-input">Filter projects</label>
           <input
