@@ -1,0 +1,74 @@
+## 2. Invariants & Negative Constraints
+- All styling MUST reside in `./style.css` (no inline style="..." attributes).
+- The page MUST NOT load external CSS frameworks or CDNs (no Bootstrap, no Tailwind).
+- The avatar image MUST use the relative path `./assets/avatar.jpg`.
+- The layout MUST collapse into a single vertical column on screens narrower than 768px.
+- style.css MUST begin with the universal reset: `*, *::before, *::after { box-sizing: border-box; }`.
+- Spacing and font sizes MUST use rem. px MAY be used only for borders.
+- Styling MUST use class selectors. ID selectors MUST NOT be used for styling.
+- All JavaScript MUST live in ./app.js. index.html MUST NOT contain inline onclick attributes or any <script> block with code inside it.
+- app.js MUST be loaded from <head> with <script src="./app.js" defer></script>.
+- Showing and hiding MUST be done by adding and removing a CSS class. app.js MUST NOT set styles directly through .style.
+- All project data MUST live in a SQLite database managed by Flask-SQLAlchemy. app.py MUST NOT read or write projects_seed.json at runtime, except when seeding an empty database.
+- The Project model MUST declare id as the primary key, title as db.String(120) with nullable=False and unique=True, and likes as db.Integer with default=0.
+- The database MUST be created by db.create_all() inside an app.app_context() block when the server starts.
+- init_seed_data() MUST insert the projects from projects_seed.json only when the projects table is empty, so restarting the server never duplicates rows.
+- Any commit the database refuses MUST be followed by db.session.rollback(), and the route MUST return 400 with a JSON error rather than crashing.
+- There MUST be an Author model with id as the primary key and name as db.String(80) with nullable=False.
+- Project MUST have an author_id column that is a db.ForeignKey referencing the authors table, and MUST NOT allow a project without an author.
+- Author MUST declare a db.relationship to Project with backref="author", so that a project can reach its author as project.author.
+- init_seed_data() MUST create one author and attach every seeded project to it.
+- `templates/index.html` MUST NOT contain a hardcoded project card.
+- `templates/index.html` MUST render one card per project with a `{% for %}` loop.
+- `style.css` and `app.js` MUST be linked with `url_for('static', filename=...)`, never with a plain relative path.
+- No Jinja syntax (`{{ }}` or `{% %}`) may appear in `static/app.js`. External script files are never processed by Flask.
+- `app.py` MUST create the application with `app = Flask(__name__)`, and MUST end with a block that runs it with `debug=True` when the file is executed directly.
+- The upvote route MUST accept `POST` only, and MUST declare its id parameter as `<int:project_id>`.
+- The upvote route MUST return `jsonify(...)`, never `render_template`.
+- `app.js` MUST check `response.ok` before reading the response body.
+
+## 3. UI Content & Interface Contract
+- Hero header: my full name "Kurt Schillinger", the subtitle "Software Engineering Student", and this bio: "Passionate about software development and web applications. Currently building hands-on projects and exploring modern developer tools."
+- Action link: a button labelled "See my projects" that links to `#projects`.
+- Projects section with id="projects": lists these items via Python data:
+  - Music Discovery App: A Tinder-style swipe interface for discovering songs and curating playlists.
+  - Personal Portfolio: A responsive web portfolio built from a strict Markdown specification.
+- Social link: GitHub (https://github.com/kschillinger28-source) MUST open in a new tab (target="_blank").
+- The page MUST use semantic landmarks: one <header>, one <nav>, one <main>, one <footer>, and each content group inside its own <section> with a heading.
+- There MUST be exactly one <h1>, and heading levels MUST NOT skip (h1 then h2 then h3).
+- <nav> MUST contain a link to the projects section and a link to my GitHub profile.
+- Each project MUST be an `<article class="card">` inside a container that uses display: flex, flex-wrap: wrap and gap.
+- The "See my projects" button MUST have four visually distinct states: :hover, :focus-visible, :active, and :disabled.
+- A second button labelled "Contact me (coming soon)" MUST be present with the HTML disabled attribute, and MUST NOT look clickable.
+- All four state rules MUST live in style.css.
+- The page MUST still be rendered by Jinja from templates/index.html, with the project list coming from a database query.
+- GET /api/projects MUST return every project as a JSON array with status code 200, built from each project's to_dict() method.
+- Adding a project and upvoting a project MUST both work exactly as they did in Lab 7, writing to the database instead of to a file.
+- A project created with the Add project form MUST be attached to the same seeded author.
+- The author name MUST be rendered visibly on each project card in templates/index.html <!-- written by KS -->
+- GET /api/projects MUST include the author's name in the JSON dictionary returned for each project <!-- written by KS -->
+- Each rendered card MUST carry the attribute `data-project-id` holding that project's id.
+- Visiting `http://127.0.0.1:5000/` MUST serve the page, with one card per entry from the database query.
+- The rendered cards MUST keep the same classes they had in Lab 5, so that the existing filter in `app.js` keeps working with no changes to `app.js`.
+- Each card MUST contain a button with class `"upvote-btn"` reading `"Upvote"`, and an element with class `"like-count"` showing that project's likes.
+- Clicking Upvote MUST send a `POST` to `/api/projects/<id>/upvote` and update only the number on that card, with no page reload.
+- A project with more than 10 likes MUST show a "Trending" badge on its card.
+
+## 4. Acceptance Checklist
+- [ ] Starting the server creates instance/portfolio.db, and the page shows the projects that were in projects_seed.json.
+- [ ] Restarting the server does not duplicate any project.
+- [ ] Opening http://127.0.0.1:5000/api/projects in the browser shows the projects as JSON.
+- [ ] Upvoting changes the count, and the new count is still there after a restart.
+- [ ] Adding a project whose title already exists does not create a second copy, and the server does not crash.
+- [ ] instance/ and *.db are ignored by Git and do not appear in git status.
+- [ ] instance/portfolio.db contains two tables.
+- [ ] Deleting instance/portfolio.db and restarting rebuilds both tables with the seed data.
+- [ ] Every card and every API record shows an author name.
+- [ ] Every card on the page comes from the `{% for %}` loop — `index.html` contains no hardcoded card.
+- [ ] Each card carries `data-project-id` with that project's id.
+- [ ] The filter box still hides and shows cards, and I did not edit `app.js` to make that work.
+- [ ] The page is styled — `style.css` and `app.js` both loaded.
+- [ ] The DevTools Console shows no red errors.
+- [ ] Clicking Upvote raises the number on that card, and only that card, with no page reload.
+- [ ] The Network tab shows the request returning JSON, not HTML.
+- [ ] A project with more than 10 likes shows a Trending badge after the page is reloaded.
