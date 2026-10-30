@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "title": "Music Discovery App",
+    "description": "A Tinder-style swipe interface for discovering songs and curating playlists.",
+    "likes": 10
+  },
+  {
+    "id": 2,
+    "title": "Personal Portfolio",
+    "description": "A responsive web portfolio built from a strict Markdown specification.",
+    "likes": 15
+  },
+  {
+    "id": 3,
+    "title": "Fishing_Is_Cool",
+    "description": "",
+    "likes": 25
+  }
+]
