@@ -94,4 +94,40 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
+  const smartCreateBtn = document.getElementById('smart-create-btn');
+  if (smartCreateBtn) {
+    smartCreateBtn.addEventListener('click', async () => {
+      const notesInput = document.getElementById('smart-notes');
+      const notes = notesInput ? notesInput.value : '';
+      const originalLabel = smartCreateBtn.textContent;
+      smartCreateBtn.disabled = true;
+      smartCreateBtn.textContent = 'Creating...';
+
+      try {
+        const response = await fetch('/api/projects/smart', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ notes }),
+          signal: AbortSignal.timeout(35000),
+        });
+
+        if (response.ok) {
+          location.reload();
+        } else {
+          const error = await response.json();
+          alert(error.error || 'Failed to smart create project');
+        }
+      } catch (error) {
+        console.error('Error creating project from notes:', error);
+        if (error.name === 'TimeoutError') {
+          alert('Smart Create timed out. Please try again.');
+        } else {
+          alert('An error occurred while connecting to the server.');
+        }
+      } finally {
+        smartCreateBtn.disabled = false;
+        smartCreateBtn.textContent = originalLabel;
+      }
+    });
+  }
 });

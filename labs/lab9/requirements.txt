@@ -1,2 +1,5 @@
 flask
 Flask-SQLAlchemy
+python-dotenv
+openai
+pydantic

@@ -134,31 +134,36 @@ def smart_create_project():
     if len(notes) < 20:
         return jsonify({"error": "Notes must be at least 20 characters long."}), 400
         
+    try:
+        extracted = extract_project_from_notes(notes)
+    except Exception as error:
+        return jsonify({"error": str(error)}), 503
+
     author = Author.query.first()
     if author is None:
         return jsonify({"error": "No author is available"}), 400
 
+    tech_str = (
+        ", ".join(extracted.technologies)
+        if isinstance(extracted.technologies, list)
+        else extracted.technologies
+    )
+    new_project = Project(
+        title=extracted.title,
+        description=notes,
+        summary=extracted.summary,
+        technologies=tech_str,
+        likes=0,
+        author=author,
+    )
+    db.session.add(new_project)
     try:
-        extracted = extract_project_from_notes(notes)
-        
-        # Join technologies list into a single comma-separated string
-        tech_str = ", ".join(extracted.technologies) if isinstance(extracted.technologies, list) else extracted.technologies
-        
-        new_project = Project(
-            title=extracted.title,
-            description=notes, # keeping raw notes as description or fallback
-            summary=extracted.summary,
-            technologies=tech_str,
-            likes=0,
-            author=author,
-        )
-        db.session.add(new_project)
         db.session.commit()
-        
-        return jsonify(new_project.to_dict()), 201
-    except Exception as e:
-        # Service or parsing failure
-        return jsonify({"error": str(e)}), 503
+    except IntegrityError:
+        db.session.rollback()
+        return jsonify({"error": "A project with that title already exists"}), 400
+
+    return jsonify(new_project.to_dict()), 201
 
 
 @app.post("/api/projects/<int:project_id>/upvote")
